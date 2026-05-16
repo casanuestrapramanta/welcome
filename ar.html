@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Nuestra - AR Stable Mesh Test</title>
+    <title>Casa Nuestra - My Custom AR Map</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -11,21 +11,22 @@
     <a-scene xr-mode-ui="XRMode: xr" webxr="optionalFeatures: hit-test;">
         
         <a-assets>
-            <a-asset-item id="clean-model" src="https://aframe.io/aframe/examples/boilerplate/hello-world/models/triceratops.glb"></a-asset-item>
+            <a-asset-item id="my-mountain" src="./models/tzoumerka.glb"></a-asset-item>
         </a-assets>
 
         <a-entity 
-            gltf-model="#clean-model" 
-            position="0 0.2 -2" 
-            scale="0.5 0.5 0.5"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 12000">
+            gltf-model="#my-mountain" 
+            position="0 0.5 -2" 
+            scale="1 1 1"
+            material="color: #8B5A2B;" 
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000">
             
             <a-text 
-                value="⛰️ ΤΖΟΥΜΕΡΚΑ\n3D MAP MODEL" 
-                position="0 2.5 0" 
-                color="#00FFCC" 
+                value="⛰️ TZOUMERKA 3D MAP\nCasa Nuestra Premium Experience" 
+                position="0 1.5 0" 
+                color="#FFD700" 
                 align="center"
-                scale="2 2 2">
+                scale="1.5 1.5 1.5">
             </a-text>
 
         </a-entity>
