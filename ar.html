@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Nuestra - AR Hello World</title>
+    
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+
+    <a-scene xr-mode-ui="XRMode: xr" webxr="optionalFeatures: hit-test;">
+        
+        <a-box 
+            position="0 1 -2" 
+            rotation="0 45 0" 
+            color="#FFD700" 
+            scale="0.5 0.5 0.5"
+            animation="property: rotation; to: 0 405 0; loop: true; dur: 5000">
+        </a-box>
+
+        <a-light type="ambient" color="#fff"></a-light>
+        <a-light type="directional" color="#fff" position="-1 2 1"></a-light>
+
+    </a-scene>
+
+</body>
+</html>
