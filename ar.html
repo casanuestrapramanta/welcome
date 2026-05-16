@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Nuestra - My Custom AR Map</title>
+    <title>Casa Nuestra - My Scaled AR Map</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
@@ -16,18 +16,18 @@
 
         <a-entity 
             gltf-model="#my-mountain" 
-            position="0 0.2 -1.5" 
-            scale="0.05 0.05 0.05"
+            position="0 0.1 -3.0" 
+            scale="0.01 0.01 0.01"
             rotation="-90 0 0"
             animation="property: rotation; to: -90 360 0; loop: true; dur: 20000">
             
             <a-text 
                 value="⛰️ TZOUMERKA 3D MAP\nCasa Nuestra Premium Experience" 
-                position="0 0 15" 
+                position="0 0 45" 
                 rotation="90 0 0"
                 color="#FFD700" 
                 align="center"
-                scale="15 15 15">
+                scale="45 45 45">
             </a-text>
 
         </a-entity>
