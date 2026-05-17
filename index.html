@@ -7,7 +7,137 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="welcome.css">
+    <style>
+        /* ── EXPLORE MAP CARD ── */
+        .explore-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            padding: 1.4rem 1.4rem 1.2rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--gold);
+            animation: fadeUp 0.5s 0.12s ease both;
+            overflow: hidden;
+        }
+
+        .explore-card .section-header {
+            margin-bottom: 0.9rem;
+        }
+
+        /* Filter pills */
+        .filter-pills {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.9rem;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.1s;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .pill.active {
+            background: var(--green-deep);
+            color: #fff;
+            border-color: var(--green-deep);
+        }
+
+        .pill:not(.active) {
+            background: #f5f2eb;
+            color: var(--text-mid);
+            border-color: #e2ddd4;
+        }
+
+        .pill:not(.active):hover {
+            background: var(--green-pale);
+            border-color: var(--green-light);
+            transform: translateY(-1px);
+        }
+
+        /* Map */
+        #explore-map {
+            width: 100%;
+            height: 260px;
+            border-radius: 0.85rem;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(26,61,43,0.12);
+            border: 1.5px solid #e0dbd0;
+        }
+
+        /* Popup custom style */
+        .leaflet-popup-content-wrapper {
+            border-radius: 0.75rem !important;
+            box-shadow: 0 4px 20px rgba(26,61,43,0.18) !important;
+            font-family: 'Lato', sans-serif;
+            padding: 0 !important;
+            overflow: hidden;
+        }
+        .leaflet-popup-content {
+            margin: 0 !important;
+        }
+        .popup-inner {
+            padding: 0.75rem 1rem 0.85rem;
+        }
+        .popup-inner .popup-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1a2e1e;
+            margin-bottom: 0.25rem;
+        }
+        .popup-inner .popup-desc {
+            font-size: 0.78rem;
+            color: #3a5240;
+            line-height: 1.45;
+            margin-bottom: 0.5rem;
+        }
+        .popup-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.55rem;
+            border-radius: 1rem;
+            background: #d8f3dc;
+            color: #1a3d2b;
+        }
+        .popup-tag.natura { background: #dceeff; color: #1a3060; }
+        .popup-tag.waterfall { background: #e0f0ff; color: #1a3060; }
+        .popup-tag.village { background: #fff3d8; color: #5a3a00; }
+
+        /* Custom marker icons */
+        .marker-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            font-size: 14px;
+        }
+
+        .marker-icon span {
+            transform: rotate(45deg);
+            display: block;
+            line-height: 1;
+        }
+    </style>
 </head>
 <body>
 
@@ -26,7 +156,7 @@
     <main class="content">
 
         <!-- Maps -->
-        <a href="https://www.google.com/maps/place/Casa+Nuestra/@39.5266645,21.1003049,17z/data=!4m14!1m7!3m6!1s0x1359590021ee4751:0x3a54c41a9ef45985!2sCasa+Nuestra!8m2!3d39.5266604!4d21.1028798!16s%2Fg%2F11xsbd3khc!3m5!1s0x1359590021ee4751:0x3a54c41a9ef45985!8m2!3d39.5266604!4d21.1028798!16s%2Fg%2F11xsbd3khc?entry=ttu&g_ep=EgoyMDI2MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="maps-btn">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=39.5266604,21.1028798&travelmode=driving" target="_blank" class="maps-btn">
             <span class="maps-btn-icon">📍</span>
             <div class="maps-btn-text">
                 <span class="maps-btn-title">Βρες το Casa Nuestra</span>
@@ -34,6 +164,23 @@
             </div>
             <span class="maps-btn-arrow">→</span>
         </a>
+
+        <!-- ── EXPLORE MAP SECTION ── -->
+        <div class="explore-card">
+            <div class="section-header">
+                <span class="section-icon">🗺️</span>
+                <h2 class="section-title">Εξερευνήστε τα Τζουμέρκα</h2>
+            </div>
+
+            <div class="filter-pills">
+                <button class="pill active" data-filter="all">Όλα</button>
+                <button class="pill" data-filter="sight">🏛️ Αξιοθέατα</button>
+                <button class="pill" data-filter="nature">🌿 Φύση / Χωριά</button>
+                <button class="pill" data-filter="waterfall">💧 Καταρράκτες</button>
+            </div>
+
+            <div id="explore-map"></div>
+        </div>
 
         <!-- Οδηγίες σπιτιού -->
         <div class="section-card">
@@ -57,7 +204,6 @@
                 <span class="info-label">🛏️ Κλινοσκεπάσματα</span>
                 <span class="info-value">Επιπλέον κουβέρτες, μαξιλάρια και πετσέτες στη ντουλάπα του 2πλου υπνοδωματίου.</span>
             </div>
-            
         </div>
 
         <!-- Φαρμακείο & Έκτακτα -->
@@ -138,5 +284,6 @@
         <p style="margin-top:0.3rem; font-size:0.7rem; opacity:0.7;">Καλή διαμονή! 🌿</p>
     </footer>
 
+    <script src="map.js"></script>
 </body>
 </html>
